@@ -1,0 +1,88 @@
+# Build the Android debug APK for the Flutter mobile app.
+name: Flutter build
+
+on:
+  pull_request:
+  push:
+    branches: ["**"]
+    paths:
+      - "mobile-app/**"
+      - "system.nix"
+      - "justfile"
+      - ".github/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  # Push and PR runs share the source branch; forks keep their own group.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}
+
+jobs:
+  build:
+    name: Android debug APK
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, nixos]
+    timeout-minutes: 30
+    env:
+      NIX_BUILD_SHELL: /run/current-system/sw/bin/bash
+      NIX_GC_ROOT_DIR: /var/lib/github-runner/clubins/nix-gcroots
+    defaults:
+      run:
+        working-directory: mobile-app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Prepare build environment
+        run: |
+          echo "/run/current-system/sw/bin" >> "$GITHUB_PATH"
+          mkdir -p "$NIX_GC_ROOT_DIR"
+          nix-build --arg android true --out-link "$NIX_GC_ROOT_DIR/flutter-shell" ./shell.nix
+          nix-build --out-link "$NIX_GC_ROOT_DIR/nix-cache-shell" ../.github/scripts/shell-nix-cache.nix
+
+      - name: Install dependencies
+        run: just deps
+
+      - name: Analyze Dart code
+        run: just analyze
+
+      - name: Run Flutter tests
+        run: just test
+
+      - name: Build debug APK
+        run: |
+          # The runner workspace is under /run, which is too small for Android build output.
+          build_root="$(mktemp -d /var/tmp/clubins-flutter.XXXXXXXX)"
+          trap 'rm -rf -- "$build_root"' EXIT
+          cp -a "$GITHUB_WORKSPACE/." "$build_root/"
+          cd "$build_root/mobile-app"
+          export GRADLE_USER_HOME="/var/lib/github-runner/clubins/gradle" ANDROID_USER_HOME="$build_root/.android"
+          mkdir -p "$GRADLE_USER_HOME" "$ANDROID_USER_HOME"
+          just android
+          cp build/app/outputs/flutter-apk/app-debug.apk "$GITHUB_WORKSPACE/mobile-app/app-debug.apk"
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v6
+        continue-on-error: true
+        with:
+          name: clubins-debug-apk
+          path: mobile-app/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Clean up unused Nix store paths
+        run: nix-collect-garbage
+
+      # The cache is an optimization; the ATTIC_TOKEN secret may not be
+      # configured on every repository that runs this workflow.
+      - name: Upload development shell to Nix cache
+        continue-on-error: true
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          export NIX_CACHE_ROOT="$(readlink -f "$NIX_GC_ROOT_DIR/flutter-shell")"
+          nix-shell .github/scripts/shell-nix-cache.nix --pure \
+            --keep ATTIC_TOKEN --keep NIX_CACHE_ROOT \
+            --run 'bash .github/scripts/upload-nix-cache.sh "$NIX_CACHE_ROOT"'

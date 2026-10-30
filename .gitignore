@@ -1,0 +1,2 @@
+# CI copies the debug APK into the checkout before uploading it as an artifact.
+/mobile-app/app-debug.apk

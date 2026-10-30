@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer">
+    <title>Clubins sign in</title>
+  </head>
+  <body>
+    <p id="message">Completing sign in…</p>
+    <script>
+      // package:oidc's web popup listens on this same-origin channel.
+      const channel = new BroadcastChannel('oidc_flutter_web/redirect');
+      channel.onmessage = (event) => {
+        const reply = JSON.parse(event.data);
+        if (reply.v !== 2 || reply.type !== 'ack') return;
+        document.getElementById('message').textContent = reply.status === 'ok'
+          ? 'Sign in complete. You can close this window.'
+          : 'Sign in failed. Close this window and try again.';
+        channel.close();
+        if (reply.status === 'ok') window.close();
+      };
+      const callbackUri = window.location.href;
+      window.history.replaceState(null, '', window.location.pathname);
+      channel.postMessage(JSON.stringify({v: 2, type: 'redirect', uri: callbackUri}));
+    </script>
+  </body>
+</html>

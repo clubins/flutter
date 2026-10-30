@@ -1,0 +1,57 @@
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+[default]
+default:
+    @{{ just_executable() }} --list
+
+# Analyze and test after installing dependencies.
+check: analyze test
+
+# Scan Dart dependencies for known vulnerabilities.
+audit:
+    nix-shell ../.github/scripts/shell-security.nix --pure --run 'osv-scanner scan source --lockfile pubspec.lock'
+
+deps:
+    nix-shell --pure --run 'flutter pub get'
+
+analyze: deps ui-check
+    nix-shell --pure --run 'flutter analyze --no-pub'
+
+# Keep app-owned UI and test harnesses on shadcn.
+ui-check:
+    nix-shell --pure --run 'dart run tool/check_ui.dart'
+
+test: deps
+    nix-shell --pure --run 'flutter test --no-pub'
+
+# Build a debug APK, preserving optional CI cache and Android workspace locations.
+android: deps
+    nix-shell --arg android true --pure --keep GRADLE_USER_HOME --keep ANDROID_USER_HOME --run 'flutter build apk --debug --no-pub'
+
+# Build for iPhone; pass Flutter flags for unsigned or simulator builds.
+[positional-arguments]
+ios *args: deps
+    nix-shell --arg ios true --pure --keep DEVELOPER_DIR --run "flutter build ios --no-pub ${*:+$(printf '%q ' "$@")}"
+
+# Launch on the chosen iPhone or simulator, with hot reload.
+[arg('device', pattern='[a-zA-Z0-9_-]+')]
+run-ios $device: deps
+    nix-shell --arg ios true --pure --keep DEVELOPER_DIR --keep device --run 'flutter run --no-pub -d "$device"'
+
+# Build web.nix with its default production OIDC settings.
+web:
+    nix-build --no-out-link --expr 'let pkgs = import ((import ../system.nix).nixpkgsSource) { }; in pkgs.callPackage ./web.nix { }'
+
+# Remove only Flutter outputs and the debug APK copied out by CI.
+clean:
+    @if [ -d build ] && [ ! -L build ]; then chmod -R u+w build; fi
+    nix-shell --pure --run 'flutter clean'
+    rm -f -- app-debug.apk
+    # Flutter can generate this macOS plugin file even without a macOS project.
+    @if [ ! -f macos/Runner.xcodeproj/project.pbxproj ] && [ ! -L macos ] && [ ! -L macos/Flutter ] \
+        && [ -f macos/Flutter/GeneratedPluginRegistrant.swift ] \
+        && ! git ls-files --error-unmatch -- macos/Flutter/GeneratedPluginRegistrant.swift >/dev/null 2>&1 \
+        && grep -Fq '//  Generated file. Do not edit.' macos/Flutter/GeneratedPluginRegistrant.swift; then \
+        rm -f -- macos/Flutter/GeneratedPluginRegistrant.swift; \
+        rmdir macos/Flutter macos 2>/dev/null || true; \
+    fi
