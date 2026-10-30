@@ -1,0 +1,37 @@
+{
+  "venueId": "9c3f1e42-7a6b-4d18-9f52-3e0c8b7a5d61",
+  "from": "2026-09-30T17:06:00Z",
+  "to": "2026-10-30T17:06:00Z",
+  "nights": [
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "nightOf": "2026-10-03",
+      "weekday": "Sat",
+      "activeMinutes": 720.0,
+      "activeMeanDba": 55.6,
+      "peakDba": 77.2,
+      "minutesAbove85": 0.0
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "nightOf": "2026-10-06",
+      "weekday": "Tue",
+      "activeMinutes": 172.6,
+      "activeMeanDba": 48.9,
+      "peakDba": 66.3,
+      "minutesAbove85": 0.0
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "nightOf": "2026-10-04",
+      "weekday": "Sun",
+      "activeMinutes": 117.6,
+      "activeMeanDba": 47.2,
+      "peakDba": 65.3,
+      "minutesAbove85": 0.0
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "venueId": "9c3f1e42-7a6b-4d18-9f52-3e0c8b7a5d61",
+  "from": "2026-09-30T17:06:00Z",
+  "to": "2026-10-30T17:06:00Z",
+  "split": "all",
+  "hours": [
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "hourLocal": 0,
+      "readings": 89460,
+      "meanDba": 51.3,
+      "p90Dba": 58.9,
+      "maxDba": 74.6,
+      "pctActive": 84.2,
+      "medianBassGapDb": 11.9,
+      "minutesAbove85": 0.0,
+      "minutesAbove90": 0.0,
+      "minutesAbove95": 0.0
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "hourLocal": 3,
+      "readings": 89501,
+      "meanDba": 49.8,
+      "p90Dba": 57.2,
+      "maxDba": 77.2,
+      "pctActive": 88.1,
+      "medianBassGapDb": 12.7,
+      "minutesAbove85": 0.0,
+      "minutesAbove90": 0.0,
+      "minutesAbove95": 0.0
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "hourLocal": 14,
+      "readings": 90233,
+      "meanDba": 38.4,
+      "p90Dba": 46.1,
+      "maxDba": 61.7,
+      "pctActive": 35.6,
+      "medianBassGapDb": null,
+      "minutesAbove85": 0.0,
+      "minutesAbove90": 0.0,
+      "minutesAbove95": 0.0
+    }
+  ]
+}
