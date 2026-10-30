@@ -1,0 +1,40 @@
+{
+  "venueId": "9c3f1e42-7a6b-4d18-9f52-3e0c8b7a5d61",
+  "from": "2026-09-30T17:06:00Z",
+  "to": "2026-10-30T17:06:00Z",
+  "days": [
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "dateLocal": "2026-10-03",
+      "readings": 83192,
+      "active": { "meanDba": 55.6, "minutes": 720.0 },
+      "quiet": { "meanDba": 15.6, "minutes": 720.0 },
+      "peak": { "dba": 77.2, "time": "2026-10-03T23:06:12Z" },
+      "thresholds": { "above85Minutes": 0.0, "above90Minutes": 0.0, "above95Minutes": 0.0 },
+      "coverage": { "firstReading": "2026-10-02T22:00:00Z", "lastReading": "2026-10-03T21:59:59Z", "capturePct": 100.0, "longestGapMinutes": 0.0 }
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "dateLocal": "2026-10-07",
+      "readings": 30510,
+      "active": { "meanDba": 41.8, "minutes": 96.2 },
+      "quiet": { "meanDba": 15.4, "minutes": 1023.8 },
+      "peak": { "dba": 63.4, "time": "2026-10-07T06:55:01Z" },
+      "thresholds": { "above85Minutes": 0.0, "above90Minutes": 0.0, "above95Minutes": 0.0 },
+      "coverage": { "firstReading": "2026-10-06T10:00:00Z", "lastReading": "2026-10-07T08:55:00Z", "capturePct": 63.5, "longestGapMinutes": 2880.0 }
+    },
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "dateLocal": "2026-10-28",
+      "readings": 86400,
+      "active": null,
+      "quiet": { "meanDba": 15.7, "minutes": 1440.0 },
+      "peak": { "dba": 22.9, "time": "2026-10-28T13:12:44Z" },
+      "thresholds": { "above85Minutes": 0.0, "above90Minutes": 0.0, "above95Minutes": 0.0 },
+      "coverage": { "firstReading": "2026-10-27T17:25:00Z", "lastReading": "2026-10-28T17:24:59Z", "capturePct": 100.0, "longestGapMinutes": 0.0 }
+    }
+  ]
+}

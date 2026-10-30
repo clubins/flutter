@@ -1,0 +1,67 @@
+{
+  "venueId": "9c3f1e42-7a6b-4d18-9f52-3e0c8b7a5d61",
+  "window": "30d",
+  "from": "2026-09-30T17:06:00Z",
+  "to": "2026-10-30T17:06:00Z",
+  "decibel": {
+    "sensors": [
+      {
+        "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+        "location": "Main Floor, Overhead",
+        "readings": 831924,
+        "peak": { "dba": 77.2, "time": "2026-10-04T03:06:12Z" },
+        "active": { "meanDba": 52.4, "minutes": 5417.5, "floorDba": 15.5, "thresholdDba": 23.5 },
+        "quiet": { "meanDba": 15.5, "minutes": 31582.5 },
+        "thresholds": { "above85Minutes": 0.0, "above90Minutes": 0.0, "above95Minutes": 0.0 },
+        "bassGap": { "medianDb": 5.5, "p90Db": 13.2 },
+        "coverage": { "firstReading": "2026-09-30T17:06:01Z", "lastReading": "2026-10-30T17:05:59Z", "capturePct": 99.7, "longestGapMinutes": 29310.0 }
+      },
+      {
+        "sensorId": "34bf9ca4-9d08-4a0b-be48-c1e453341db4",
+        "location": "Outside, Container",
+        "readings": 0,
+        "peak": null,
+        "active": null,
+        "quiet": null,
+        "thresholds": null,
+        "bassGap": null,
+        "coverage": null
+      }
+    ]
+  },
+  "pax": {
+    "sensors": [
+      {
+        "sensorId": "ba7d6078-5e04-4f0a-8f96-2a7e5c33c217",
+        "location": "Main Floor, Wand",
+        "readings": 0,
+        "maxOccupancy": null,
+        "venueHours": null,
+        "coverage": null
+      }
+    ]
+  },
+  "weather": { "sensors": [] },
+  "health": [
+    {
+      "sensorId": "288a6991-3bd4-4ad7-8953-3f6d8a932154",
+      "location": "Main Floor, Overhead",
+      "lastSeen": "2026-10-30T17:05:59Z",
+      "staleMinutes": 0.3,
+      "medianIntervalS": 1.0,
+      "capturePct": 99.7
+    },
+    {
+      "sensorId": "34bf9ca4-9d08-4a0b-be48-c1e453341db4",
+      "location": "Outside, Container",
+      "lastSeen": null,
+      "staleMinutes": null,
+      "medianIntervalS": null,
+      "capturePct": null
+    }
+  ],
+  "caveats": [
+    "coverage gap 2026-10-07T08:55Z → 2026-10-27T17:25Z (upstream ingestion, 488.5 h)",
+    "Outside, Container: no readings in window"
+  ]
+}
